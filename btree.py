@@ -56,10 +56,12 @@ class Node:
 
 class Btree:
     def __init__(self,root=None):
+        global t 
         self.degree=t
         self.maxKeyLength = self.degree*2 - 1
         self.minKeyLength = self.degree - 1
-        self.root=Node(root)
+        # self.root=Node(root)
+        self.root=None
 
     def printTree(self,node=None):
         if node==None:
@@ -70,11 +72,27 @@ class Btree:
                 print key,
         else :
             i=0
+
+
+            for key in node.keys:
+                self.printTree(node.pointers[i])
+                print key,
+                i+=1
+            self.printTree(node.pointers[i])
+
+    def preorder(self,node=None):
+        if node==None:
+            node= self.root
+
+        if node.leaf:
             for key in node.keys:
                 print key,
-                printTree(pointers[i+1])
+        else :
+            i=0
+            for key in node.keys:
+                print key,
+                # printTree(pointers[i+1])
                 i+=1
-
 
 
 
@@ -87,7 +105,9 @@ class Btree:
         node2 = Node(data = node.keys[t:], pointers = node.pointers[t+1:] )
 
         if parent==None:
-            self.root==Node([node.keys[t-1]],pointers=[node1,node2],leaf=False)
+            self.root = Node([node.keys[t-1]],pointers=[node1,node2],leaf=False)
+            parent = self.root
+            parent.leaf = False
         else :
             parent.insert(node.keys[t-1],node1,node2)
 
@@ -127,11 +147,18 @@ class Btree:
 ############################################## main code test code below
 
 b =  Btree()
-b.insert(1)
-b.insert(2)
-b.insert(3)
-b.insert(4)
-b.insert(5)
-b.insert(6)
+# b.insert(1)
+# b.insert(2)
+# b.insert(3)
+# b.insert(4)
+# b.insert(5)
+# b.insert(6)
+x=0
+x=int(raw_input('enter value to insert -1 to exit'))
+while x!=-1:
+    b.insert(x)
+    x=int(raw_input('enter value to insert -1 to exit'))
+
 
 b.printTree();
+# b.preorder();
